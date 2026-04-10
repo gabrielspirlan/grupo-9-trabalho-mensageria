@@ -1,7 +1,6 @@
 package com.grupo9.trabalho_mensageria.infrastructure.repositories;
 
 import com.grupo9.trabalho_mensageria.domain.entities.Order;
-import com.grupo9.trabalho_mensageria.domain.enums.OrderStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +22,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     Page<Order> findWithFilters(
         @Param("clientId") Integer clientId,
         @Param("productId") Integer productId,
-        @Param("status") OrderStatusEnum status,
+        @Param("status") String status,
         Pageable pageable
     );
 }
