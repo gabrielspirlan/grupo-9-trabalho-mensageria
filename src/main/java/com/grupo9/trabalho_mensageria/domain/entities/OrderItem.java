@@ -7,13 +7,23 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Entity(name = "order_itens")
+@IdClass(OrderItemId.class)
 public class OrderItem {
 
     @Id
+    @JsonIgnore
     private Integer id;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "order_uuid")
+    @JsonIgnore
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -21,15 +31,11 @@ public class OrderItem {
     private Product product;
 
     private Integer quantity;
-    @ManyToOne
-    @JoinColumn(name = "order_uuid")
-    @JsonIgnore
-    private Order  order;
 
     @Column(name = "unit_price")
     @JsonProperty("unit_price")
-    private Double unitPrice;
-    private Double total;
+    private BigDecimal unitPrice;
+    private BigDecimal total;
 
     @JsonProperty("product_id")
     public Integer getProductId() {

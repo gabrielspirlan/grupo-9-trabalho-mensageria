@@ -1,13 +1,13 @@
 package com.grupo9.trabalho_mensageria.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo9.trabalho_mensageria.domain.enums.OrderStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +33,7 @@ public class Order {
 
     private String channel;
 
-    @Convert(converter = com.grupo9.trabalho_mensageria.domain.converters.OrderStatusConverter.class)
-    private OrderStatusEnum status;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -57,5 +56,5 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)
     private List<OrderItem> items = new java.util.ArrayList<>();
 
-    private Double total;
+    private BigDecimal total;
 }
