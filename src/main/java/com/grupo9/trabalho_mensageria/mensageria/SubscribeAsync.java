@@ -32,9 +32,9 @@ public class SubscribeAsync implements CommandLineRunner {
         MessageReceiver receiver = (PubsubMessage message, AckReplyConsumer consumer) -> {
             String data = message.getData().toStringUtf8();
              if (messageService.processMessage(data)) {
-//                  consumer.ack();
+                  consumer.ack();
              } else {
-//                  consumer.nack();
+                  consumer.nack();
              }
         };
 
@@ -43,8 +43,13 @@ public class SubscribeAsync implements CommandLineRunner {
             subscriber = Subscriber.newBuilder(subscriptionName, receiver).build();
             subscriber.startAsync().awaitRunning();
             System.out.println("Escutando Mensagem: " + subscriptionName.toString());
-            subscriber.awaitTerminated(30, TimeUnit.SECONDS);
-        } catch (TimeoutException timeoutException) {
+            try {
+                Thread.currentThread().join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Thread interrompida: " + e.getMessage());
+            }
+        } catch (Exception exception) {
             if (subscriber != null) {
                 subscriber.stopAsync();
             }

@@ -17,7 +17,8 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
             "LEFT JOIN FETCH o.items i " +
             "WHERE (:clientId IS NULL OR o.customer.id = :clientId) " +
             "AND (:status IS NULL OR o.status = :status) " +
-            "AND (:productId IS NULL OR i.product.id = :productId)"
+            "AND (:productId IS NULL OR i.product.id = :productId) " +
+            "ORDER BY o.createdAt DESC"
     )
     Page<Order> findWithFilters(
         @Param("clientId") Integer clientId,
