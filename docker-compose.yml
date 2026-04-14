@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_trabalho_mensageria
+    restart: unless-stopped
+
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: trabalho_mensageria
+
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./backup:/docker-entrypoint-initdb.d
+
+    command: postgres -c max_connections=200
